@@ -3,24 +3,28 @@ from django.http import HttpResponse
 
 from .models import Greeting
 
-import process
+import urllib3
 
-# Create your views here.
-def index(request):
-    # return HttpResponse('Hello from Python!')
-    return render(request, 'index.html')
+#############################################
 
-def db(request):
-    greeting = Greeting()
-    greeting.save()
-    greetings = Greeting.objects.all()
-    return render(request, 'db.html', {'greetings': greetings})
+http = urllib3.PoolManager()
+
+def get(url):
+    r = http.request("GET", url)
+    content = r.data.decode("utf-8")
+    return content
+
+#############################################
+
+def index(request):    
+    return render(request, 'report.html', {"content": "Welcome!"})
 
 def startbot(request):
     print("starting bot")
-    process.PopenProcess(["python","lichess-bot.py"],"lichess-bot")    
-    return render(request, 'index.html')
+    content = get("http://localhost:3000/b")
+    return render(request, 'report.html', {"content": content})
 
 def stopbot(request):
-    print("stopping bot","not implemented")    
-    return render(request, 'index.html')
+    print("starting bot")
+    content = get("http://localhost:3000/s")
+    return render(request, 'report.html', {"content": content})

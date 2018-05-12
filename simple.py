@@ -3,26 +3,28 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import process
 import sys
 
+#############################################
+
 bp = None
 
 def startbot():
-    global bp
-    print("starting bot")
+    global bp    
     if not ( bp is None):
-        print("bot already running")
-    else:
-        bp = process.PopenProcess(["python","lichess-bot.py"],"lichess-bot")    
-        print("bot process started",bp)
+        return("bot already running")
+    else:        
+        bp = process.PopenProcess(["python","lichess-bot.py"],"lichess-bot")            
+        return("starting bot")
 
 def stopbot():
     global bp
-    print("stopping bot")    
-    if not ( bp is None):
-        bp.send_line("x")
-        print("bot process stopped")
+    if not ( bp is None):        
+        bp.send_line("x")        
         bp = None    
+        return("stopping bot")
     else:
-        print("no bot running")    
+        return("bot already stopped")
+
+#############################################
  
 # HTTPRequestHandler class
 class testHTTPServer_RequestHandler(BaseHTTPRequestHandler):
@@ -37,28 +39,28 @@ class testHTTPServer_RequestHandler(BaseHTTPRequestHandler):
         self.end_headers()
  
         # Send message back to client
-        message = "Hello world!"
+        message = "nop"
 
         if self.path == "/b":
-            startbot()
-            message = "bot start received"
+            message = startbot()            
 
         if self.path == "/s":
-            stopbot()
-            message = "bot stop received"
+            message = stopbot()
 
         # Write content as utf-8 data
         self.wfile.write(bytes(message, "utf8"))
         return
- 
+
+
 def run():
+  # Start server
   print('starting server...')
  
-  # Server settings
-  # Choose port 8080, for port 80, which is normally used for a http server, you need root access
-  server_address = ('', int(sys.argv[1]))  
+  server_address = ('localhost', int(sys.argv[1]))
   httpd = HTTPServer(server_address, testHTTPServer_RequestHandler)
+
   print('running server on address',server_address)
+
   httpd.serve_forever()
  
  
