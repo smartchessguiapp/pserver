@@ -51,17 +51,20 @@ class testHTTPServer_RequestHandler(BaseHTTPRequestHandler):
         self.wfile.write(bytes(message, "utf8"))
         return
 
+#############################################
 
 def run():
   # Start server
   print('starting server...')
  
-  server_address = ('localhost', int(sys.argv[1]))
+  server_address = (sys.argv[1], int(sys.argv[2]))
   httpd = HTTPServer(server_address, testHTTPServer_RequestHandler)
 
   print('running server on address',server_address)
 
   httpd.serve_forever()
- 
- 
+
+#############################################
+
 run()
+

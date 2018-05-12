@@ -17,6 +17,7 @@ def get(url):
 #############################################
 
 def index(request):    
+    print("index")
     return render(request, 'report.html', {"content": "Welcome!"})
 
 def startbot(request):
@@ -25,6 +26,7 @@ def startbot(request):
     return render(request, 'report.html', {"content": content})
 
 def stopbot(request):
-    print("starting bot")
+    print("stopping bot")
     content = get("http://localhost:3000/s")
     return render(request, 'report.html', {"content": content})
+
