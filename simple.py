@@ -1,14 +1,18 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 import process
+import sys
 
 bp = None
 
 def startbot():
     global bp
     print("starting bot")
-    bp = process.PopenProcess(["python","lichess-bot.py"],"lichess-bot")    
-    print("bot process started",bp)
+    if not ( bp is None):
+        print("bot already running")
+    else:
+        bp = process.PopenProcess(["python","lichess-bot.py"],"lichess-bot")    
+        print("bot process started",bp)
 
 def stopbot():
     global bp
@@ -52,9 +56,9 @@ def run():
  
   # Server settings
   # Choose port 8080, for port 80, which is normally used for a http server, you need root access
-  server_address = ('', 3000)
+  server_address = ('', int(sys.argv[1]))  
   httpd = HTTPServer(server_address, testHTTPServer_RequestHandler)
-  print('running server...')
+  print('running server on address',server_address)
   httpd.serve_forever()
  
  
