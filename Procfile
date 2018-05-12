@@ -1,1 +1,1 @@
-web: bash startserver.sh
+web: bash startserver.django.sh
