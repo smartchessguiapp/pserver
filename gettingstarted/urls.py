@@ -12,7 +12,7 @@ import hello.views
 
 urlpatterns = [
     url(r'^$', hello.views.index, name='index'),    
-    url(r'b', hello.views.startbot, name='startbot'),
-    url(r's', hello.views.stopbot, name='stopbot'),
+    url(r'^b$', hello.views.startbot, name='startbot'),
+    url(r'^s$', hello.views.stopbot, name='stopbot'),
     path('admin/', admin.site.urls),
 ]
